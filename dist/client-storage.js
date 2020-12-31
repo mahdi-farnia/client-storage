@@ -113,8 +113,8 @@ var ClientStorage;
          */
         switch() {
             this.type === 'local'
-                ? (this.store = sessionStorage)
-                : (this.store = localStorage);
+                ? ((this.store = sessionStorage), (this.type = 'session'))
+                : ((this.store = localStorage), (this.type = 'local'));
             this.refresh();
             return this;
         }

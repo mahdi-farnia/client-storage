@@ -152,8 +152,8 @@ namespace ClientStorage {
      */
     switch(): ThisType<Store<Exclude<'local' | 'session', T>>> {
       this.type === 'local'
-        ? (this.store = sessionStorage)
-        : (this.store = localStorage);
+        ? ((this.store = sessionStorage), (this.type = 'session' as T))
+        : ((this.store = localStorage), (this.type = 'local' as T));
       this.refresh();
       return this;
     }
