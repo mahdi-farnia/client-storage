@@ -4,7 +4,7 @@ namespace ClientStorage {
   }
 
   export class Store<T extends 'local' | 'session'> {
-    protected type: T;
+    type: T;
     private store: Storage | never;
     #storeValue: PlainObject;
 
@@ -20,8 +20,8 @@ namespace ClientStorage {
       this.#storeValue = { ...this.store };
     }
 
-    public set(key: string, value: any): ThisType<Store<T>>;
-    public set(setObject: PlainObject): ThisType<Store<T>>;
+    set(key: string, value: any): ThisType<Store<T>>;
+    set(setObject: PlainObject): ThisType<Store<T>>;
     set(key: string | PlainObject, value?: any): ThisType<Store<T>> {
       const _set = (k: string, v: string) => {
         this.store.setItem(k, v);
@@ -49,12 +49,12 @@ namespace ClientStorage {
      * Get All From Store
      * @param force get all from browser?
      */
-    public get(force?: boolean): PlainObject;
+    get(force?: boolean): PlainObject;
     /**
      * Get Specified Item From Store
      * @param force get all from browser?
      */
-    public get(key: string, force?: boolean): any;
+    get(key: string, force?: boolean): any;
     get(key?: string | boolean, force?: boolean): any {
       if (typeof key === 'boolean' || typeof key === 'undefined') {
         key === true && this.refresh();
@@ -89,11 +89,11 @@ namespace ClientStorage {
     /**
      * Clear Entire Storage
      */
-    public clear(): ThisType<Store<T>>;
+    clear(): ThisType<Store<T>>;
     /**
      * Clear Specified Item
      */
-    public clear(key: string): ThisType<Store<T>>;
+    clear(key: string): ThisType<Store<T>>;
     clear(key?: string): ThisType<Store<T>> {
       if (typeof key === 'string') {
         this.store.removeItem(key);
@@ -185,13 +185,12 @@ namespace ClientStorage {
     }
   }
 
+  const isValidObj = (o: any) =>
+    o != null &&
+    typeof o === 'object' &&
+    !Array.isArray(o) &&
+    Object.prototype.toString.call(o) === '[object Object]';
   function isPlainObject(arg: any): arg is PlainObject {
-    const isValidObj = (o: any) =>
-      o != null &&
-      typeof o === 'object' &&
-      !Array.isArray(o) &&
-      Object.prototype.toString.call(o) === '[object Object]';
-
     if (!isValidObj(arg)) return !1;
 
     let ctor = arg.constructor,
